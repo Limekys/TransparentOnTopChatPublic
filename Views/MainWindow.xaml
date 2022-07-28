@@ -1,0 +1,66 @@
+﻿<Window x:Name="MainOverlay" 
+        x:Class="TransparentOnTopChat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TransparentOnTopChat"
+        xmlns:viewmodels="clr-namespace:TransparentOnTopChat.ViewModels"
+        mc:Ignorable="d"
+        Height="450" Width="800" 
+        Topmost="True"
+        AllowsTransparency="true" 
+        WindowStyle="None" 
+        WindowState="Maximized"
+        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+        IsHitTestVisible="False"
+        IsTabStop="False"
+        SourceInitialized="Window_SourceInitialized"
+        Background="{x:Null}" 
+        ResizeMode="NoResize" 
+        Deactivated="MainOverlay_Deactivated"
+        Closed="MainOverlay_Closed">
+
+    <Window.DataContext>
+        <viewmodels:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid Name="MainGrid" Margin="32,32,32,32" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="FirstColumn"></ColumnDefinition> <!-- Имя первой колонке в таблице --> 
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Name="ListBoxMessages" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Messages}" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                 SelectedItem="{Binding CurrentMessage}" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+
+                    <DockPanel MinWidth="300" Width="{Binding ActualWidth, ElementName=FirstColumn, UpdateSourceTrigger=Default}"
+                        DockPanel.Dock="Top" >
+
+                        <TextBlock x:Name="textBlock" DockPanel.Dock="Left" FontSize="24" Foreground="{Binding Path=ColorValue}" Text="{Binding Path=Username}" >
+                            <TextBlock.Effect>
+                                <DropShadowEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" FontSize="24" Text="{Binding Path=Message}" >
+                            <TextBlock.Effect>
+                                <DropShadowEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </DockPanel>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</Window>
